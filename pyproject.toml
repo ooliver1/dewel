@@ -8,8 +8,11 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.10"
-velum = {git = "https://github.com/eludris-community/velum", extras = ["speedups"]}
+velum = {git = "https://github.com/eludris-community/velum"}
 sail = {git = "https://github.com/eludris-community/velum-sail"}
+aiohttp = {extras = ["speedups"], version = "^3.8.3"}
+orjson = "^3.8.3"
+uvloop = "^0.17.0"
 
 [tool.poetry.group.dev.dependencies]
 black = "^22.12.0"

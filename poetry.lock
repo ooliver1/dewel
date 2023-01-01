@@ -219,6 +219,14 @@ optional = false
 python-versions = ">=3.7"
 
 [[package]]
+name = "piston-rspy"
+version = "0.4.0"
+description = "Python bindings for piston_rs."
+category = "main"
+optional = false
+python-versions = ">=3.7,<3.11"
+
+[[package]]
 name = "platformdirs"
 version = "2.6.2"
 description = "A small Python package for determining appropriate platform-specific dirs, e.g. a \"user data dir\"."
@@ -285,7 +293,7 @@ velum = {git = "https://github.com/eludris-community/velum"}
 type = "git"
 url = "https://github.com/eludris-community/velum-sail"
 reference = "HEAD"
-resolved_reference = "f66e0a0405cff110bc38185cb647c3ff6eff60b0"
+resolved_reference = "5b02e6243e94cb9336fa29338a3b0db9d34e0729"
 
 [[package]]
 name = "tomli"
@@ -349,8 +357,8 @@ multidict = ">=4.0"
 
 [metadata]
 lock-version = "1.1"
-python-versions = "^3.10"
-content-hash = "f59454645d472d11a7f87a2b1ceaa8567d34b038a024b566856134116319f329"
+python-versions = "~3.10"
+content-hash = "34d153a794f21c401cc479d29f6589799892284d6ed5a4d093d724032db6dcec"
 
 [metadata.files]
 aiodns = [
@@ -855,6 +863,33 @@ orjson = [
 pathspec = [
     {file = "pathspec-0.10.3-py3-none-any.whl", hash = "sha256:3c95343af8b756205e2aba76e843ba9520a24dd84f68c22b9f93251507509dd6"},
     {file = "pathspec-0.10.3.tar.gz", hash = "sha256:56200de4077d9d0791465aa9095a01d421861e405b5096955051deefd697d6f6"},
+]
+piston-rspy = [
+    {file = "piston_rspy-0.4.0-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:110bdadfc39fa7e78e95971d12731058bda57bab0955aaf16e3d3b8fa8266547"},
+    {file = "piston_rspy-0.4.0-cp310-cp310-manylinux_2_12_i686.manylinux2010_i686.manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:a566534b272c1614080f624941bf4a6e09d9029ebf7cc07d100f93cf98a596f7"},
+    {file = "piston_rspy-0.4.0-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:985ee35186ba36d92fb3e1079335e0dfdb01561c166b3ae521ba55820bd8d906"},
+    {file = "piston_rspy-0.4.0-cp310-cp310-musllinux_1_1_x86_64.whl", hash = "sha256:23bb2accc555ddc29a99d74e9bc1783cf4fc3798b7e44cc12abc0334d6f088c1"},
+    {file = "piston_rspy-0.4.0-cp310-cp310-win32.whl", hash = "sha256:d2b0edbb7a16149e1b8932efc0b7e1179aa2866076f6587d2cf18dad5d454e88"},
+    {file = "piston_rspy-0.4.0-cp310-cp310-win_amd64.whl", hash = "sha256:d3c694ea3df82ff4873076680fad990cf3682dac86ddcc282e63178728d4f4c5"},
+    {file = "piston_rspy-0.4.0-cp37-cp37m-macosx_10_9_x86_64.whl", hash = "sha256:870975f293c322e1beca5384da21f0c519ee822b0ac8b476ce7fdfd391c39e74"},
+    {file = "piston_rspy-0.4.0-cp37-cp37m-manylinux_2_12_i686.manylinux2010_i686.manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:cbabc8e247fef14f9433f8c69911b65b4a4f481c566a98d9c125c2a272c910a6"},
+    {file = "piston_rspy-0.4.0-cp37-cp37m-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:7faacd4f01b9ff7707cd623c5441020c60850cf38ecc68cf7050655ececc7dc1"},
+    {file = "piston_rspy-0.4.0-cp37-cp37m-musllinux_1_1_x86_64.whl", hash = "sha256:6f0ed4a008812883b93200b69b0e382ef466e3ab58c6fd68368d7c037d1a30fb"},
+    {file = "piston_rspy-0.4.0-cp37-cp37m-win32.whl", hash = "sha256:026a37c176529d4fffa97376c74138721483a476b622f375d18a201c28a4be86"},
+    {file = "piston_rspy-0.4.0-cp37-cp37m-win_amd64.whl", hash = "sha256:0b4fa18bafb4a36794a75548bc5f99cc11f8c75fc74732606df4962207eeb1fa"},
+    {file = "piston_rspy-0.4.0-cp38-cp38-macosx_10_9_x86_64.whl", hash = "sha256:7c7ff988f5ce14517e96f370c8e17c4ebf71c236b68ef8b216b0492c62c8987f"},
+    {file = "piston_rspy-0.4.0-cp38-cp38-manylinux_2_12_i686.manylinux2010_i686.manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:5c86b5fdb105cb4b0fcf1d18f17d64931273d49a96fdcbb1a0a500106eeddf25"},
+    {file = "piston_rspy-0.4.0-cp38-cp38-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:1ebc61b7b62c6d9487903793cf930943a5a27d2f966e8c0f902f0f9e1c675ba3"},
+    {file = "piston_rspy-0.4.0-cp38-cp38-musllinux_1_1_x86_64.whl", hash = "sha256:6ff9ad6f8ad0919d96342e6f79aba45d4fec88aa1faa8fecf883e1c270a95ad7"},
+    {file = "piston_rspy-0.4.0-cp38-cp38-win32.whl", hash = "sha256:b3d07019f4bd8d19ddd767b351b8c8cfc40a324e790dca7baf1bde8cfd726f53"},
+    {file = "piston_rspy-0.4.0-cp38-cp38-win_amd64.whl", hash = "sha256:9b7fb6fc18c585d095154ef0898945447853b4323a9ac34e62bbdb70c76c315d"},
+    {file = "piston_rspy-0.4.0-cp39-cp39-macosx_10_9_x86_64.whl", hash = "sha256:3307cd7b0bd74cc9a85db6d7c57d74518c8a2e77df685d3fd9a3a61402019180"},
+    {file = "piston_rspy-0.4.0-cp39-cp39-manylinux_2_12_i686.manylinux2010_i686.manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:2f4a4f25f7a890b3a45731d390ccb118cf15c4b4d81a8126be60073ed68e8bd9"},
+    {file = "piston_rspy-0.4.0-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:0e8223e8d9a09a302b22d6be2f645814699569f34e926520381cbf9fc510c66e"},
+    {file = "piston_rspy-0.4.0-cp39-cp39-musllinux_1_1_x86_64.whl", hash = "sha256:34f87f0657ef87079259b9a5766cb6a0b1db722faadccbbf6fe8f089c632fb42"},
+    {file = "piston_rspy-0.4.0-cp39-cp39-win32.whl", hash = "sha256:40040502e52ece1c962242cc97322e0083c1cdae3c0e75b91256ba40de78894e"},
+    {file = "piston_rspy-0.4.0-cp39-cp39-win_amd64.whl", hash = "sha256:046969529e506ecd16febcf8730ac3b35073c8e014f9367d9b83ec29a7ef3633"},
+    {file = "piston_rspy-0.4.0.tar.gz", hash = "sha256:e71c8a59cb790429d80444b42b344b07bbc0774003b48446513b10572cb269a0"},
 ]
 platformdirs = [
     {file = "platformdirs-2.6.2-py3-none-any.whl", hash = "sha256:83c8f6d04389165de7c9b6f0c682439697887bca0aa2f1c87ef1826be3584490"},

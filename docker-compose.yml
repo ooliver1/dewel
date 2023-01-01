@@ -1,7 +1,23 @@
 version: "3"
 
+x-restart-policy:
+  &restart-policy
+  restart: unless-stopped
+
 services:
   bot:
-    restart: unless-stopped
+    <<: *restart-policy
     pull_policy: build
     build: .
+    depends_on: [ piston ]
+    volumes:
+      - ./logs:/bot/logs
+  piston:
+    <<: *restart-policy
+    image: ghcr.io/engineer-man/piston
+    container_name: piston_api
+    volumes:
+      - ./data/piston/packages:/piston/packages
+    tmpfs:
+      - /piston/jobs:exec,uid=1000,gid=1000,mode=711
+      - /tmp:exec

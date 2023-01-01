@@ -60,6 +60,12 @@ async def eval(
         ),
     )
 
+    if result.is_err():
+        await bot.rest.send_message(
+            "Dewel", f"Could not find language {language} with version {version}"
+        )
+        return
+
     if result.compile and (result.compile.code or result.compile.signal):
         msg = "Your code failed to compile"
         if result.compile.code:

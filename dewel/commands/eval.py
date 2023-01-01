@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: MIT
+
 from logging import getLogger
 from signal import Signals
 

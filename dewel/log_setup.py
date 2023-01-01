@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: MIT
+
 from logging import INFO, Formatter, StreamHandler, getLogger
 from logging.handlers import RotatingFileHandler
 

@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: MIT
+
 from asyncio import run
 
 import uvloop

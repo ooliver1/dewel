@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: MIT
+
 from sail import CommandManager
 
 from .bot import Dewel

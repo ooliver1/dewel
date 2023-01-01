@@ -1,3 +1,3 @@
-# dewel
+# Dewel
 
-<!-- TODO: -->
+An Eludris bot to aid in programming/development.

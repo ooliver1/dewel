@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "dewel"
 version = "0.1.0"
-description = ""
+description = "An Eludris bot to aid in programming/development."
 authors = ["ooliver1 <oliverwilkes2006@icloud.com>"]
 license = "MIT"
 readme = "README.md"

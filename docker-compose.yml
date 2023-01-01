@@ -1,0 +1,7 @@
+version: "3"
+
+services:
+  bot:
+    restart: unless-stopped
+    pull_policy: build
+    build: .

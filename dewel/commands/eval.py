@@ -49,7 +49,6 @@ def truncate(string: str, *, length: int, lines: int) -> str:
 async def eval(
     ctx: Context, language: str, version: str, args: str, code: str, stdin: str
 ):
-    log.info(code)
     result = await bot.piston_client.execute(
         Executor(
             language=language,

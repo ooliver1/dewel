@@ -149,7 +149,9 @@ async def eval(
     if resp.status != 200:
         if "runtime is unknown" in result["message"]:
             await bot.rest.send_message(
-                "Dewel", f"Could not find language {language} with version {version}"
+                "Dewel",
+                f"Could not find language {language} with version {version}."
+                "See my full list of versions with `;list`.",
             )
         else:
             await bot.rest.send_message(

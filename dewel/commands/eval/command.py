@@ -19,14 +19,41 @@ log = getLogger(__name__)
 INVALID_CODEBLOCK = r"""
 Your codeblock is invalid. Please use the following format:
 ```
-;eval [language] [optional semver version matching, e.g. (1.66)]
+;eval [optional language] [optional semver version matching, e.g. (1.66)]
 [optional arguments split by newlines]
 \`\`\`[optional language, this or the first line]
 <your code, in a fenced codeblock>
 \`\`\`
-[stdin]
+[optional stdin]
 ```
 """.strip()
+DESCRIPTION = r"""
+Run code in a sandboxed environment.
+
+Your input should be in the following format:
+```
+;eval [optional language] [optional semver version matching, e.g. (1.66)]
+[optional arguments split by newlines]
+\`\`\`[optional language, this or the first line]
+<your code, in a fenced codeblock>
+\`\`\`
+[optional stdin]
+```
+
+Examples:
+```
+;eval \`\`\`py
+print("Hello, world!")
+\`\`\`
+;eval python 3.11 \`\`\`py
+print("Hello, world!")
+\`\`\`
+;eval 1.66 \`\`\`rs
+println!("Hello, world!");
+\`\`\`
+```
+""".strip()
+LIST_DESCRIPTION = "List all languages, versions and runtimes I support."
 
 
 def truncate(string: str, *, length: int, lines: int) -> str:
@@ -103,7 +130,7 @@ def get_message(result: Any) -> str:
     return msg
 
 
-@manager.command(string_parser=parse)
+@manager.command(string_parser=parse, description=DESCRIPTION)
 async def eval(
     ctx: Context, language: str, version: str, args: str, code: str, stdin: str
 ):
@@ -132,6 +159,48 @@ async def eval(
         return
 
     await bot.rest.send_message("Dewel", get_message(result))
+
+
+@manager.command(description=LIST_DESCRIPTION)
+async def list(ctx: Context):
+    async with bot.piston_client.get(bot.BASE_URL / "runtimes") as resp:
+        runtimes = await resp.json(loads=orjson.loads)
+
+    if resp.status != 200:
+        await bot.rest.send_message(
+            "Dewel",
+            f"Something unexpected happened :(\n```\n{runtimes}\n```",
+        )
+        return
+
+    language_list: dict[str, dict[str, Any]] = {}
+    for r in runtimes:
+        key = f"{r['language']} ({r['runtime']})" if "runtime" in r else r["language"]
+        if existing := language_list.get(key):
+            if existing["aliases"] == r["aliases"]:
+                existing["versions"].append(r["version"])
+                existing["versions"].sort()
+            else:
+                existing["aliases"] += r["aliases"]
+                existing["aliases"].sort()
+        else:
+            language_list[key] = dict(
+                aliases=r["aliases"],
+                versions=[r["version"]],
+            )
+
+    language_string = "\n".join(
+        f"{language} ({', '.join(aliases)}) - {', '.join(versions)}"
+        for language, aliases, versions in (
+            (language, data["aliases"], data["versions"])
+            for language, data in language_list.items()
+        )
+    )
+
+    await bot.rest.send_message(
+        "Dewel",
+        f"Here's a list of languages I can run code in:\n{language_string}",
+    )
 
 
 @bot.listen()

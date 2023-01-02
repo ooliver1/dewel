@@ -4,7 +4,7 @@ export PLATFORM=docker-debian
 make build-all
 
 rm -f archives/index.csv
-find . -name "*.pkg.tar.gz" | xargs cp -n -t ./archives
+find . -name "*.pkg.tar.gz" -type f -not -path "./archives/*" | xargs cp --remove-destination -t ./archives
 
 for file in ./archives/*.pkg.tar.gz; do
     base_name=$(basename $file)

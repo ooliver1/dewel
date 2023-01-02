@@ -16,7 +16,7 @@ services:
     <<: *restart-policy
     image: ghcr.io/engineer-man/piston
     environment:
-      PISTON_REPO_URL: https://raw.githubusercontent.com/ooliver1/dewel/master/packages/archives/index.csv
+      PISTON_REPO_URL: https://github.com/ooliver1/dewel/releases/download/pkgs/index.csv
     volumes:
       - ./data/piston/packages:/piston/packages
     tmpfs:

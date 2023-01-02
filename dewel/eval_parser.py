@@ -7,7 +7,7 @@ from .errors import CodeBlockError
 
 # onerandomusername/monty-python:exts/eval/__init__.py for the codeblock regex.
 CODE_RE = re.compile(
-    r"(?: +(?P<cmdlang>\S*?)\s*|\s*)"
+    r"(?: *(?P<cmdlang>\S*?)\s*|\s*)"
     # Optional language, followed by whitespace.
     r"(?: \(+(?P<version>\S*?)\)\s*|\s*)"
     # Optional version, followed by whitespace.

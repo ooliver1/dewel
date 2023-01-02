@@ -15,7 +15,8 @@ services:
   piston:
     <<: *restart-policy
     image: ghcr.io/engineer-man/piston
-    container_name: piston_api
+    environment:
+      PISTON_REPO_URL: https://github.com/engineer-man/piston/releases/download/pkgs/index
     volumes:
       - ./data/piston/packages:/piston/packages
     tmpfs:

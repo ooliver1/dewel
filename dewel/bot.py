@@ -33,26 +33,18 @@ class Dewel(GatewayClient):
         log.info("Installing packages...")
 
         async with ClientSession() as session:
-            # TODO: when I have my own list
-            # async with session.get(f"{self.BASE_URL}/packages") as resp:
-            #     packages: list = await resp.json()
+            async with session.get(f"{self.BASE_URL}/packages") as resp:
+                packages: list = await resp.json()
 
-            # for package in packages:
-            #     if not package["installed"]:
-            #         async with session.post(
-            #             f"{self.BASE_URL}/packages",
-            #             json={
-            #                 "language": package["language"],
-            #                 "version": package["language_version"],
-            #             },
-            #         ):
-            #             log.info(f"Installed {package['language']}")
-
-            async with session.post(
-                f"{self.BASE_URL}/packages",
-                json={
-                    "language": "python",
-                    "version": "3.10",
-                },
-            ):
-                log.info("Installed python")
+            for package in packages:
+                if not package["installed"]:
+                    async with session.post(
+                        f"{self.BASE_URL}/packages",
+                        json={
+                            "language": package["language"],
+                            "version": package["language_version"],
+                        },
+                    ):
+                        log.info(
+                            f"Installed {package['language']} {package['language_version']}"
+                        )

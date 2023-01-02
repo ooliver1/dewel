@@ -183,11 +183,11 @@ async def list(ctx: Context):
                 existing["versions"].append(r["version"])
                 existing["versions"].sort()
             else:
-                existing["aliases"] += r["aliases"]
+                existing["aliases"].update(r["aliases"])
                 existing["aliases"].sort()
         else:
             language_list[key] = dict(
-                aliases=r["aliases"],
+                aliases=set(r["aliases"]),
                 versions=[r["version"]],
             )
 

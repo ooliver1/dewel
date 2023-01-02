@@ -9,13 +9,13 @@ from dewel.errors import CodeBlockError
 CODE_RE = re.compile(
     r"(?: *(?P<cmdlang>\S*?)\s*|\s*)"
     # Optional language, followed by whitespace.
-    r"(?:(?(cmdlang) ) *\(?(?P<version>[\d*x.]*?)\)?\s*|\s*)"
+    r"(?: *\(?(?P<version>[\d*x.]*?)\)?\s*|\s*)"
     # Optional version, with brackets if they want, followed by whitespace.
     r"(?:\n(?P<args>(?:[^\n\r\f\v]+\n?)*?)\s*|\s*)?"
     # Optional arguments, split by newline, followed by whitespace.
     r"(?P<delim>(?P<block>```)|``?)"
     # Code delimiter: 1-3 backticks; (?P=block) only matches if it's a block.
-    r"(?(block)(?:(?P<blocklang>[a-z0-9]+)\n)?)"
+    r"(?(block)(?:(?P<blocklang>[a-z0-9+]+)\n)?)"
     # If we're in a block, match optional language (only letters plus newline).
     r"(?:[ \t]*\n)*"
     # Any blank (empty or tabs/spaces only) lines before the code.
@@ -47,5 +47,9 @@ def parse(user_input: str) -> tuple[Sequence[str], dict[str, Sequence[str]]]:
     args = match.group("args") or ""
     code = match.group("code")
     stdin = match.group("stdin") or ""
+
+    # Tried to fix in regex, broke other cases.
+    if language.startswith("py") and version == "2":
+        language = "python2"
 
     return [language, version, args, code, stdin], {}

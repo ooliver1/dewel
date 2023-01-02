@@ -11,18 +11,21 @@ from velum import ExceptionEvent
 from dewel import bot, manager
 from dewel.errors import CodeBlockError
 
+from .boilerplate import remove_boilerplate
 from .parser import parse
 
 log = getLogger(__name__)
 
 INVALID_CODEBLOCK = r"""
 Your codeblock is invalid. Please use the following format:
-;eval [language]
+```
+;eval [language] [optional semver version matching, e.g. (1.66)]
 [optional arguments split by newlines]
 \`\`\`[optional language, this or the first line]
-<your code>
+<your code, in a fenced codeblock>
 \`\`\`
 [stdin]
+```
 """.strip()
 
 
@@ -109,7 +112,7 @@ async def eval(
         json=dict(
             language=language,
             version=version,
-            files=[dict(content=code)],
+            files=[dict(content=remove_boilerplate(language, code))],
             args=args.splitlines(),
             stdin=stdin,
         ),

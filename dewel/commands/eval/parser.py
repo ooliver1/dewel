@@ -9,8 +9,8 @@ from dewel.errors import CodeBlockError
 CODE_RE = re.compile(
     r"(?: *(?P<cmdlang>\S*?)\s*|\s*)"
     # Optional language, followed by whitespace.
-    r"(?: \(+(?P<version>\S*?)\)\s*|\s*)"
-    # Optional version, followed by whitespace.
+    r"(?: *\(?(?P<version>[\d*x.]*?)\)?\s*|\s*)"
+    # Optional version, with brackets if they want, followed by whitespace.
     r"(?:\n(?P<args>(?:[^\n\r\f\v]+\n?)*?)\s*|\s*)?"
     # Optional arguments, split by newline, followed by whitespace.
     r"(?P<delim>(?P<block>```)|``?)"

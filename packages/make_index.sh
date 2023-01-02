@@ -3,7 +3,7 @@
 export PLATFORM=docker-debian
 make build-all
 
-rm archives/index.csv
+rm -f archives/index.csv
 find . -name "*.pkg.tar.gz" | xargs cp -n -t ./archives
 
 for file in ./archives/*.pkg.tar.gz; do

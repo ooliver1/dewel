@@ -86,7 +86,7 @@ def get_message(result: Any) -> str:
         msg = f"Your code failed to compile, exiting with with code {ret_code}"
 
         try:
-            if ret_code > 128:
+            if ret_code is not None and ret_code > 128:
                 ret_code -= 128
 
             signal = Signals(ret_code)

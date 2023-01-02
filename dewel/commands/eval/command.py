@@ -2,13 +2,15 @@
 
 from logging import getLogger
 from signal import Signals
+from typing import Any
 
-from piston_rspy import Executor, File
+import orjson
 from sail import Context
 from velum import ExceptionEvent
 
 from dewel import bot, manager
 from dewel.errors import CodeBlockError
+
 from .parser import parse
 
 log = getLogger(__name__)
@@ -43,80 +45,90 @@ def truncate(string: str, *, length: int, lines: int) -> str:
     return string
 
 
-@manager.command(string_parser=parse)
-async def eval(
-    ctx: Context, language: str, version: str, args: str, code: str, stdin: str
-):
-    result = await bot.piston_client.execute(
-        Executor(
-            language=language,
-            version=version,
-            files=[File(content=code)],
-            args=args.splitlines(),
-            stdin=stdin,
-        ),
-    )
+def get_message(result: Any) -> str:
+    run = result["run"]
+    compile = result.get("compile")
 
-    if result.is_err():
-        await bot.rest.send_message(
-            "Dewel", f"Could not find language {language} with version {version}"
-        )
-        return
+    if compile and compile.get("code", 0) != 0:
+        ret_code = compile["code"]
+        exit_signal = compile.get("signal")
+        output = compile.get("output")
+        msg = f"Your code failed to compile, exiting with with code {ret_code}"
 
-    if result.compile and (result.compile.code or result.compile.signal):
-        msg = "Your code failed to compile"
-        if result.compile.code:
-            msg += f", exiting with with code {result.compile.code}"
-            try:
-                ret_code = result.compile.code
-                if ret_code > 128:
-                    ret_code -= 128
+        try:
+            if ret_code > 128:
+                ret_code -= 128
 
-                signal = Signals(ret_code)
-                msg += f" ({signal.name})"
-            except ValueError:
-                pass
-        if result.compile.signal:
-            msg += f", exiting with signal {result.compile.signal}"
-            if result.compile.signal == "SIGKILL":
+            signal = Signals(ret_code)
+            msg += f" ({signal.name})"
+        except ValueError:
+            pass
+
+        if exit_signal:
+            msg += f", killed with signal {result.compile.signal}"
+            if exit_signal == "SIGKILL":
                 msg += " (memory or time limit exceeded)"
-        if result.compile.output:
-            output = truncate(
-                result.compile.output.removesuffix("\n"), length=1000, lines=10
-            )
+        if output:
+            output = truncate(output.removesuffix("\n"), length=1000, lines=11)
             msg += f"\n```\n{output}\n```"
-    elif result.run.code or result.run.signal:
-        msg = "Your code failed to run"
-        if result.run.code:
-            msg += f", exiting with with code {result.run.code}"
-            try:
-                ret_code = result.run.code
-                if ret_code > 128:
-                    ret_code -= 128
+    elif exit_code := run.get("code", 0):
+        msg = f"Your code failed to run, exiting with with code {exit_code}"
 
-                signal = Signals(ret_code)
-                msg += f" ({signal.name})"
-            except ValueError:
-                pass
-        if result.run.signal:
-            msg += f", exiting with signal {result.run.signal}"
-            if result.run.signal == "SIGKILL":
+        try:
+            if exit_code > 128:
+                exit_code -= 128
+
+            signal = Signals(exit_code)
+            msg += f" ({signal.name})"
+        except ValueError:
+            pass
+
+        if signal := run.get("signal"):
+            msg += f", killed with signal {signal}"
+            if signal == "SIGKILL":
                 msg += " (memory or time limit exceeded)"
-        if result.run.output:
-            output = truncate(
-                result.run.output.removesuffix("\n"), length=1000, lines=10
-            )
+        if output := run.get("output"):
+            output = truncate(output.removesuffix("\n"), length=1000, lines=11)
             msg += f"\n```\n{output}\n```"
     else:
-        if result.run.output:
-            output = truncate(
-                result.run.output.removesuffix("\n"), length=1000, lines=10
-            )
+        if output := run.get("output"):
+            output = truncate(output.removesuffix("\n"), length=1000, lines=11)
             msg = f"Your code ran successfully!\n```\n{output}\n```"
         else:
             msg = "Your code successfully ran with no output!"
 
-    await bot.rest.send_message("Dewel", msg)
+    return msg
+
+
+@manager.command(string_parser=parse)
+async def eval(
+    ctx: Context, language: str, version: str, args: str, code: str, stdin: str
+):
+    async with bot.piston_client.post(
+        bot.BASE_URL / "execute",
+        json=dict(
+            language=language,
+            version=version,
+            files=[dict(content=code)],
+            args=args.splitlines(),
+            stdin=stdin,
+        ),
+    ) as resp:
+        result = await resp.json(loads=orjson.loads)
+
+    if resp.status != 200:
+        if "runtime is unknown" in result["message"]:
+            await bot.rest.send_message(
+                "Dewel", f"Could not find language {language} with version {version}"
+            )
+        else:
+            await bot.rest.send_message(
+                "Dewel",
+                f"Something unexpected happened :(\n```\n{result}\n```",
+            )
+        return
+
+    await bot.rest.send_message("Dewel", get_message(result))
 
 
 @bot.listen()

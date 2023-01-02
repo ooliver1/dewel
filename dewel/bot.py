@@ -5,14 +5,14 @@ from os import environ as env
 from typing import Any
 
 from aiohttp import ClientSession
-from piston_rspy import Client
 from velum import GatewayClient
+from yarl import URL
 
 log = getLogger(__name__)
 
 
 class Dewel(GatewayClient):
-    BASE_URL = "http://piston:2000/api/v2/"
+    BASE_URL = URL("http://piston:2000/api/v2/")
 
     def __init__(
         self,
@@ -27,29 +27,33 @@ class Dewel(GatewayClient):
             **kwargs,
         )
 
-        self.piston_client = Client.with_url(self.BASE_URL)
+        self.piston_client: ClientSession = None  # type: ignore
 
     async def start(self) -> None:
+        self.piston_client = ClientSession()
         await self.install_packages()
         return await super().start()
+
+    async def close(self) -> None:
+        await self.piston_client.close()
+        return await super().close()
 
     async def install_packages(self) -> None:
         log.info("Installing packages...")
 
-        async with ClientSession() as session:
-            async with session.get(f"{self.BASE_URL}/packages") as resp:
-                packages: list = await resp.json()
+        async with self.piston_client.get(self.BASE_URL / "packages") as resp:
+            packages: list = await resp.json()
 
-            for package in packages:
-                if not package["installed"]:
-                    async with session.post(
-                        f"{self.BASE_URL}/packages",
-                        json={
-                            "language": package["language"],
-                            "version": package["language_version"],
-                        },
-                    ):
-                        log.info(
-                            f"Installed {package['language']}"
-                            f"{package['language_version']}"
-                        )
+        for package in packages:
+            if not package["installed"]:
+                async with self.piston_client.post(
+                    self.BASE_URL / "packages",
+                    json={
+                        "language": package["language"],
+                        "version": package["language_version"],
+                    },
+                ):
+                    log.info(
+                        f"Installed {package['language']}"
+                        f"{package['language_version']}"
+                    )

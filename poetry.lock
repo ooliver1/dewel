@@ -293,7 +293,7 @@ velum = {git = "https://github.com/eludris-community/velum"}
 type = "git"
 url = "https://github.com/eludris-community/velum-sail"
 reference = "HEAD"
-resolved_reference = "5b02e6243e94cb9336fa29338a3b0db9d34e0729"
+resolved_reference = "9717220e5ef8a3411c9cb9d9cf206903371486c4"
 
 [[package]]
 name = "tomli"

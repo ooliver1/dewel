@@ -9,7 +9,7 @@ from velum import ExceptionEvent
 
 from dewel import bot, manager
 from dewel.errors import CodeBlockError
-from dewel.eval_parser import parse
+from .parser import parse
 
 log = getLogger(__name__)
 

@@ -3,7 +3,7 @@
 import re
 from typing import Sequence
 
-from .errors import CodeBlockError
+from dewel.errors import CodeBlockError
 
 # onerandomusername/monty-python:exts/eval/__init__.py for the codeblock regex.
 CODE_RE = re.compile(

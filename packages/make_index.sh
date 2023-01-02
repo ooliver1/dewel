@@ -11,7 +11,7 @@ for file in ./archives/*.pkg.tar.gz; do
     language=$(cut -d '-' -f 1 <<< $base_name)
     version=$(cut -d '-' -f 2 <<< $base_name | awk -F'.pkg.tar.gz' '{print $1}')
     sha=$(sha256sum $base_name | cut -d ' ' -f 1)
-    url="https://raw.githubusercontent.com/ooliver1/dewel/master/packages/archives/$base_name"
+    url="https://github.com/ooliver1/dewel/raw/master/packages/archives/$base_name"
     index+="$NL$language,$version,$sha,$url"
 done
 

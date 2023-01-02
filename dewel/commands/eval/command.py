@@ -189,7 +189,7 @@ async def list(ctx: Context):
             )
 
     language_string = "\n".join(
-        f"{language} ({', '.join(sorted(aliases))}) - {', '.join(versions)}"
+        f"{language} ({', '.join(sorted(aliases))}) - {', '.join(sorted(versions))}"
         for language, aliases, versions in (
             (language, data["aliases"], data["versions"])
             for language, data in language_list.items()

@@ -179,10 +179,8 @@ async def list(ctx: Context):
     for r in runtimes:
         key = f"{r['language']} ({r['runtime']})" if "runtime" in r else r["language"]
         if existing := language_list.get(key):
-            if existing["aliases"] == r["aliases"]:
-                existing["versions"].append(r["version"])
-            else:
-                existing["aliases"].update(r["aliases"])
+            existing["versions"].append(r["version"])
+            existing["aliases"].update(r["aliases"])
         else:
             language_list[key] = dict(
                 aliases=set(r["aliases"]),

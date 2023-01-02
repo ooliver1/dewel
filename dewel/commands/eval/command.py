@@ -95,7 +95,7 @@ def get_message(result: Any) -> str:
             pass
 
         if exit_signal:
-            msg += f", killed with signal {result.compile.signal}"
+            msg += f", killed with signal {exit_signal}"
             if exit_signal == "SIGKILL":
                 msg += " (memory or time limit exceeded)"
         if output:

@@ -16,3 +16,5 @@ for file in ./archives/*.pkg.tar.gz; do
 done
 
 echo $index > archives/index.csv
+cd ..
+git lfs track packages/archives/*.pkg.tar.gz

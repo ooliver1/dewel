@@ -12,7 +12,7 @@ log = getLogger(__name__)
 
 
 class Dewel(GatewayClient):
-    BASE_URL = URL("http://piston:2000/api/v2/")
+    BASE_URL = URL(f"{env['PISTON_URL']}/api/v2/")
 
     def __init__(
         self,

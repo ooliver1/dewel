@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: MIT
 
 from logging import getLogger
+from os import environ as env
 from typing import Any
 
 from aiohttp import ClientSession
@@ -15,13 +16,16 @@ class Dewel(GatewayClient):
 
     def __init__(
         self,
-        cdn_url: str | None = None,
-        gateway_url: str | None = None,
-        rest_url: str | None = None,
         *args: Any,
         **kwargs: Any,
     ):
-        super().__init__(cdn_url, gateway_url, rest_url, *args, **kwargs)
+        super().__init__(
+            cdn_url=env["CDN_URL"],
+            gateway_url=env["GW_URL"],
+            rest_url=env["REST_URL"],
+            *args,
+            **kwargs,
+        )
 
         self.piston_client = Client.with_url(self.BASE_URL)
 
@@ -46,5 +50,6 @@ class Dewel(GatewayClient):
                         },
                     ):
                         log.info(
-                            f"Installed {package['language']} {package['language_version']}"
+                            f"Installed {package['language']}"
+                            f"{package['language_version']}"
                         )

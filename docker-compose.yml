@@ -12,11 +12,18 @@ services:
     depends_on: [ piston ]
     volumes:
       - ./logs:/bot/logs
+    environment:
+      REST_URL: ${REST_URL:-https://api.eludris.gay}
+      GW_URL: ${GW_URL:-wss://ws.eludris.gay/}
+      CDN_URL: ${CDN_URL:-https://cdn.eludris.gay}
   piston:
     <<: *restart-policy
     image: ghcr.io/engineer-man/piston
     environment:
       PISTON_REPO_URL: https://github.com/ooliver1/dewel/releases/download/pkgs/index.csv
+      PISTON_COMPILE_MEMORY_LIMIT: "104857600" # 100MB
+      PISTON_RUN_MEMORY_LIMIT: "52428800" # 50MB
+      PISTON_LIMIT_OVERRIDES: '{"rust": {"compile_memory_limit":524288000}}' # 500MB
     volumes:
       - ./data/piston/packages:/piston/packages
     tmpfs:

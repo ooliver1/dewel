@@ -13,7 +13,6 @@ from dewel.eval_parser import parse
 
 log = getLogger(__name__)
 
-MAX_MEMORY = 50 * 1024 * 1024  # 50 MiB
 INVALID_CODEBLOCK = r"""
 Your codeblock is invalid. Please use the following format:
 ;eval [language]
@@ -55,8 +54,6 @@ async def eval(
             files=[File(content=code)],
             args=args.splitlines(),
             stdin=stdin,
-            compile_memory_limit=MAX_MEMORY,
-            run_memory_limit=MAX_MEMORY,
         ),
     )
 

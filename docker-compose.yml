@@ -32,4 +32,3 @@ services:
       - /piston/jobs:exec,uid=1000,gid=1000,mode=711
       - /tmp:exec
     ports: [ 127.0.0.1:2309:2000 ]
-    network_mode: host

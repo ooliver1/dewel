@@ -181,10 +181,8 @@ async def list(ctx: Context):
         if existing := language_list.get(key):
             if existing["aliases"] == r["aliases"]:
                 existing["versions"].append(r["version"])
-                existing["versions"]
             else:
                 existing["aliases"].update(r["aliases"])
-                existing["aliases"]
         else:
             language_list[key] = dict(
                 aliases=set(r["aliases"]),

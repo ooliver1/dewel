@@ -54,6 +54,6 @@ class Dewel(GatewayClient):
                     },
                 ):
                     log.info(
-                        f"Installed {package['language']}"
+                        f"Installed {package['language']} "
                         f"{package['language_version']}"
                     )

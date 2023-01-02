@@ -1,5 +1,6 @@
 #!/usr/bin/bash
 
+export PLATFORM=docker-debian
 make build-all
 
 NL=$'\n'

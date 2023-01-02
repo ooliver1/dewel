@@ -181,10 +181,10 @@ async def list(ctx: Context):
         if existing := language_list.get(key):
             if existing["aliases"] == r["aliases"]:
                 existing["versions"].append(r["version"])
-                existing["versions"].sort()
+                existing["versions"]
             else:
                 existing["aliases"].update(r["aliases"])
-                existing["aliases"].sort()
+                existing["aliases"]
         else:
             language_list[key] = dict(
                 aliases=set(r["aliases"]),
@@ -192,7 +192,7 @@ async def list(ctx: Context):
             )
 
     language_string = "\n".join(
-        f"{language} ({', '.join(aliases)}) - {', '.join(versions)}"
+        f"{language} ({', '.join(sorted(aliases))}) - {', '.join(versions)}"
         for language, aliases, versions in (
             (language, data["aliases"], data["versions"])
             for language, data in language_list.items()

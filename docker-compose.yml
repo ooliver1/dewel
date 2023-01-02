@@ -13,9 +13,11 @@ services:
     volumes:
       - ./logs:/bot/logs
     environment:
-      REST_URL: ${REST_URL:-https://api.eludris.gay}
-      GW_URL: ${GW_URL:-wss://ws.eludris.gay/}
-      CDN_URL: ${CDN_URL:-https://cdn.eludris.gay}
+      REST_URL: ${REST_URL:-localhost:7159}
+      GW_URL: ${GW_URL:-ws://localhost:7160}
+      CDN_URL: ${CDN_URL:-http://localhost:7161}
+      PISTON_URL: ${PISTON_URL:-http://localhost:2309}
+    network_mode: host # used to connect to a selfhosted instance
   piston:
     <<: *restart-policy
     image: ghcr.io/engineer-man/piston
@@ -29,3 +31,5 @@ services:
     tmpfs:
       - /piston/jobs:exec,uid=1000,gid=1000,mode=711
       - /tmp:exec
+    ports: [ 127.0.0.1:2309:2000 ]
+    network_mode: host

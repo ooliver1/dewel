@@ -24,8 +24,8 @@ services:
     environment:
       PISTON_REPO_URL: https://github.com/ooliver1/dewel/releases/download/pkgs/index.csv
       PISTON_COMPILE_MEMORY_LIMIT: "104857600" # 100MB
-      PISTON_RUN_MEMORY_LIMIT: "52428800" # 50MB
-      PISTON_LIMIT_OVERRIDES: '{"rust": {"compile_memory_limit":524288000}}' # 500MB
+      PISTON_RUN_MEMORY_LIMIT: "52428800"
+      PISTON_LIMIT_OVERRIDES: '{"rust": {"compile_memory_limit":524288000}, "javascript": {"run_memory_limit": 1073741824}}' # 500MB, 1GB
     volumes:
       - ./data/piston/packages:/piston/packages
     tmpfs:

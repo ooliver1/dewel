@@ -15,7 +15,7 @@ CODE_RE = re.compile(
     # Optional arguments, split by newline, followed by whitespace.
     r"(?P<delim>(?P<block>```)|``?)"
     # Code delimiter: 1-3 backticks; (?P=block) only matches if it's a block.
-    r"(?(block)(?:(?P<blocklang>[a-z]+)\n)?)"
+    r"(?(block)(?:(?P<blocklang>[a-z0-9]+)\n)?)"
     # If we're in a block, match optional language (only letters plus newline).
     r"(?:[ \t]*\n)*"
     # Any blank (empty or tabs/spaces only) lines before the code.

@@ -17,4 +17,3 @@ for file in ./archives/*.pkg.tar.gz; do
 done
 
 echo $index > archives/index.csv
-echo "run git lfs track packages/archives/*.pkg.tar.gz"

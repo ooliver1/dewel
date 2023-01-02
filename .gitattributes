@@ -1,2 +1,0 @@
-packages/archives/python-3.11.1.pkg.tar.gz filter=lfs diff=lfs merge=lfs -text
-packages/archives/rust-1.66.0.pkg.tar.gz filter=lfs diff=lfs merge=lfs -text

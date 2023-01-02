@@ -1,9 +1,9 @@
 */*/*
 *.pkg.tar.gz
+archives/
 !*/*/metadata.json
 !*/*/build.sh
 !*/*/environment
 !*/*/run
 !*/*/compile
 !*/*/test.*
-!archives/*

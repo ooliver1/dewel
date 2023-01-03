@@ -21,14 +21,13 @@ def rust_boilerplate(code: str) -> str:
 def c_boilerplate(code: str) -> str:
     if "main" in code:
         return code
-
     imports = []
     lines = ["int main() {"]
 
     # Someone out there will decide that they will not like the beloved \n.
     # This splits everything by `;` to check for includes, and then recombines.
-    lines = code.replace(";", ";\n").split("\n")
-    for line in lines:
+    original_lines = code.replace(";", ";\n").split("\n")
+    for line in original_lines:
         if line.lstrip().startswith("#include"):
             imports.append(line)
         else:

@@ -134,6 +134,7 @@ def get_message(result: Any) -> str:
 async def eval(
     ctx: Context, language: str, version: str, args: str, code: str, stdin: str
 ):
+    log.info("woah")
     async with bot.piston_client.post(
         bot.BASE_URL / "execute",
         json=dict(
@@ -144,6 +145,7 @@ async def eval(
             stdin=stdin,
         ),
     ) as resp:
+        log.info("wee")
         result = await resp.json(loads=orjson.loads)
 
     if resp.status != 200:

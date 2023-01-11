@@ -96,21 +96,17 @@ def get_message(result: Any) -> str:
         if compile_code:
             msg = f"Your code failed to compile, exiting with with code {run_code}"
 
-            if run_signal:
+            if compile_signal:
                 msg += f", killed with signal {compile_signal}"
-                if signal:
-                    msg += f" ({signal})"
-                if signal == "SIGKILL":
-                    msg += " (memory or time limit exceeded)"
+            elif signal:
+                msg += f" ({signal})"
         else:
-            msg = f"Your code failed to run, exiting with signal {compile_signal} ({signal})"
-
-        if compile_signal:
-            msg += f", killed with signal {compile_signal}"
+            msg = f"Your code failed to run, killed with signal {compile_signal}"
             if signal:
                 msg += f" ({signal})"
-            if signal == "SIGKILL":
-                msg += " (memory or time limit exceeded)"
+                if signal == "SIGKILL":
+                    msg += " (memory or time limit exceeded)"
+
         if output := compile.get("output"):
             output = truncate(output.removesuffix("\n"), length=1000, lines=11)
             msg += f"\n```\n{output}\n```"
@@ -124,16 +120,18 @@ def get_message(result: Any) -> str:
             signal = "UNKNOWN"
 
         if run_code:
-            msg = f"Your code failed to run, exiting with with code {run_code}"
+            msg = f"Your code failed to compile, exiting with with code {run_code}"
 
             if run_signal:
-                msg += f", killed with signal {run_signal} ({signal})"
+                msg += f", killed with signal {run_signal}"
+            elif signal:
+                msg += f" ({signal})"
+        else:
+            msg = f"Your code failed to run, killed with signal {run_signal}"
+            if signal:
+                msg += f" ({signal})"
                 if signal == "SIGKILL":
                     msg += " (memory or time limit exceeded)"
-        else:
-            msg = (
-                f"Your code failed to run, exiting with signal {run_signal} ({signal})"
-            )
 
         if output := run.get("output"):
             output = truncate(output.removesuffix("\n"), length=1000, lines=11)

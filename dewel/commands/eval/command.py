@@ -102,7 +102,7 @@ def get_message(result: Any) -> str:
                 msg += f" ({signal})"
         else:
             msg = f"Your code failed to run, killed with signal {compile_signal}"
-            if signal == "SIGKILL":
+            if compile_signal == "SIGKILL":
                 msg += " (memory or time limit exceeded)"
 
         if output := compile.get("output"):
@@ -126,7 +126,7 @@ def get_message(result: Any) -> str:
                 msg += f" ({signal})"
         else:
             msg = f"Your code failed to run, killed with signal {run_signal}"
-            if signal == "SIGKILL":
+            if run_signal == "SIGKILL":
                 msg += " (memory or time limit exceeded)"
 
         if output := run.get("output"):

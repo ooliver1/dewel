@@ -77,46 +77,64 @@ def truncate(string: str, *, length: int, lines: int) -> str:
 
 def get_message(result: Any) -> str:
     run = result["run"]
-    compile = result.get("compile")
+    compile = result.get("compile", {})
 
-    if compile and compile.get("code", 0) != 0:
-        ret_code = compile["code"]
-        exit_signal = compile.get("signal")
-        output = compile.get("output")
-        msg = f"Your code failed to compile, exiting with with code {ret_code}"
+    compile_code = compile.get("code", 0)
+    compile_signal = compile.get("signal")
+    run_code = run.get("code", 0)
+    run_signal = run.get("signal")
 
+    if compile_code or compile_signal:
         try:
-            if ret_code is not None and ret_code > 128:
-                ret_code -= 128
+            if compile_code is not None and compile_code > 128:
+                compile_code -= 128
 
-            signal = Signals(ret_code)
-            msg += f" ({signal.name})"
+            signal = Signals(compile_code).name
         except ValueError:
-            pass
+            signal = None
 
-        if exit_signal:
-            msg += f", killed with signal {exit_signal}"
-            if exit_signal == "SIGKILL":
-                msg += " (memory or time limit exceeded)"
-        if output:
-            output = truncate(output.removesuffix("\n"), length=1000, lines=11)
-            msg += f"\n```\n{output}\n```"
-    elif exit_code := run.get("code", 0):
-        msg = f"Your code failed to run, exiting with with code {exit_code}"
+        if compile_code:
+            msg = f"Your code failed to compile, exiting with with code {run_code}"
 
-        try:
-            if exit_code > 128:
-                exit_code -= 128
+            if run_signal:
+                msg += f", killed with signal {compile_signal}"
+                if signal:
+                    msg += f" ({signal})"
+                if signal == "SIGKILL":
+                    msg += " (memory or time limit exceeded)"
+        else:
+            msg = f"Your code failed to run, exiting with signal {compile_signal} ({signal})"
 
-            signal = Signals(exit_code)
-            msg += f" ({signal.name})"
-        except ValueError:
-            pass
-
-        if signal := run.get("signal"):
-            msg += f", killed with signal {signal}"
+        if compile_signal:
+            msg += f", killed with signal {compile_signal}"
+            if signal:
+                msg += f" ({signal})"
             if signal == "SIGKILL":
                 msg += " (memory or time limit exceeded)"
+        if output := compile.get("output"):
+            output = truncate(output.removesuffix("\n"), length=1000, lines=11)
+            msg += f"\n```\n{output}\n```"
+    elif run_code or run_signal:
+        try:
+            if run_code > 128:
+                run_code -= 128
+
+            signal = Signals(run_code).name
+        except ValueError:
+            signal = "UNKNOWN"
+
+        if run_code:
+            msg = f"Your code failed to run, exiting with with code {run_code}"
+
+            if run_signal:
+                msg += f", killed with signal {run_signal} ({signal})"
+                if signal == "SIGKILL":
+                    msg += " (memory or time limit exceeded)"
+        else:
+            msg = (
+                f"Your code failed to run, exiting with signal {run_signal} ({signal})"
+            )
+
         if output := run.get("output"):
             output = truncate(output.removesuffix("\n"), length=1000, lines=11)
             msg += f"\n```\n{output}\n```"
@@ -145,7 +163,6 @@ async def eval(
             stdin=stdin,
         ),
     ) as resp:
-        log.info("wee")
         result = await resp.json(loads=orjson.loads)
 
     if resp.status != 200:

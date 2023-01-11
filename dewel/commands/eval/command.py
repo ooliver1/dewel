@@ -116,7 +116,7 @@ def get_message(result: Any) -> str:
             msg += f"\n```\n{output}\n```"
     elif run_code or run_signal:
         try:
-            if run_code > 128:
+            if run_code is not None and run_code > 128:
                 run_code -= 128
 
             signal = Signals(run_code).name
